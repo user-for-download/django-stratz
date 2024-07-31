@@ -329,6 +329,6 @@ SOCIALACCOUNT_FORMS = {"signup": "dj.users.forms.UserSocialSignupForm"}
 # ------------------------------------------------------------------------------
 URL_STRATZ = 'https://api.stratz.com/api/v1/'
 TOKEN_STRATZ = (
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTdWJqZWN0IjoiYzBkM2RjZjQtNzBlNS00OGUzLWJiYTItNTg5MDA2ZDhhOWRkIiwiU3RlYW1JZCI6IjM0MTY2MDYzIiwibmJmIjoxNzE0NjY1ODE5LCJleHAiOjE3NDYyMDE4MTksImlhdCI6MTcxNDY2NTgxOSwiaXNzIjoiaHR0cHM6Ly9hcGkuc3RyYXR6LmNvbSJ9.Cn9aJFngI7iBDI64-cggOGqb2Ai31NeLJAd3QJtZNzo')
+    '.eyJTdWJqZWN0IjoiYzBkM2RjZjQtNzBlNS00OGUzLWJiYTItNTg5MDA2ZDhhOWRkIiwiU3RlYW1JZCI6IjM0MTY2MDYzIiwibmJmIjoxNzE0NjY1ODE5LCJleHAiOjE3NDYyMDE4MTksImlhdCI6MTcxNDY2NTgxOSwiaXNzIjoiaHR0cHM6Ly9hcGkuc3RyYXR6LmNvbSJ9.Cn9aJFngI7iBDI64-cggOGqb2Ai31NeLJAd3QJtZNzo')
 
 APPEND_SLASH = False
