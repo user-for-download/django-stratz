@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+  Teams: {{ team_list|length }}
+{% endblock title %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 p-2">
+        <div class="col-sm-12 p-4 text-center">
+          <h1><a href="{% url 'teams:team_list' %}">Teams</a></h1>
+          {% if request.user.is_authenticated %}
+            <form method="POST" action="{% url 'teams:teams_update' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary m-2">Update Teams</button>
+            </form>
+          {% endif %}
+        </div>
+        {% if team_list %}
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th class="text-center" scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th class="text-center" scope="col">win_count</th>
+              <th class="text-center" scope="col">loss_count</th>
+              <th class="text-center" scope="col">win_ratio</th>
+              <th class="text-center" scope="col">tag</th>
+              <th class="text-center" scope="col">Updated</th>
+              <th class="text-center" scope="col">last_match</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for team in team_list %}
+              <tr {% if team.win_ratio > 60 %} class="table-primary" {% endif %}>
+                <th scope="row"><a href="{{ team.get_absolute_url }}">{{ team.id }}</a></th>
+                <td>{{ team.name }}</td>
+                <td>{{ team.win_count }}</td>
+                <td>{{ team.loss_count }}</td>
+                <td class="text-center {% if team.rank > 1400 %} table-success{% endif %}">{{ team.rank }}
+                </td>
+                <td>{{ team.tag }}</td>
+                <td>{{ team.get_last_update }}</td>
+                <td>{{ team.get_verbose_last_match_date_time }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>There are no teams in the library.</p>
+        {% endif %}
+      </div>
+      {% include 'pagination.html' %}
+    </div>
+  </div>
+{% endblock content %}

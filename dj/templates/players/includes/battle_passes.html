@@ -1,0 +1,6 @@
+{% for bp in player.get_battle_pass %}
+  <li><a class="dropdown-item">
+    Event ID: {{ bp.event_id }} - Level: {{ bp.level }}</a></li>
+{% empty %}
+  <li><a class="dropdown-item">No battle pass information available.</a></li>
+{% endfor %}

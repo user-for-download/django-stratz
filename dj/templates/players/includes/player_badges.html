@@ -1,0 +1,7 @@
+  {% for badge in player.get_badges %}
+    <li><a class="dropdown-item">Badge ID:
+      {{ badge.badge_id }} - Created Date:
+      {{ badge.created_date_time }}</a></li>
+    {% empty %}
+      <li><a class="dropdown-item">No badges available.</a></li>
+  {% endfor %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+  players: {{ object_list|length }}
+{% endblock title %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 p-2">
+        <div class="col-sm-12 p-4 text-center">
+          <h1><a href="{% url 'players:player_list' %}">Players</a></h1>
+          {% if request.user.is_authenticated %}
+            <form method="POST" action="{% url 'players:players_update' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary m-2">Get Players</button>
+            </form>
+          {% endif %}
+        </div>
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th class="text-center" scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Real Name</th>
+            <th class="text-center" scope="col">win_count</th>
+            <th class="text-center" scope="col">match_count</th>
+            <th class="text-center" scope="col">team_id</th>
+            <th class="text-center" scope="col">f date</th>
+            <th class="text-center" scope="col">update</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for player in object_list %}
+            <tr {% if player.steam_account.smurfFlag %} class="table-primary" {% endif %}>
+              <th scope="row"><a href="{{ player.get_absolute_url }}">{{ player.id }}</a></th>
+              <td>{{ player.steam_account.name }}</td>
+              <td>{{ player.get_real_name }}</td>
+              <td>{{ player.win_count }}</td>
+              <td>{{ player.match_count }}</td>
+              <th scope="row"><a href="{{ player.team.team.get_absolute_url }}">{{ player.team.team }}</a></th>
+              <td>{{ player.get_verbose_first_match_date|date:'d.m.Y' }}</td>
+              <td>{{ player.get_last_update }}</td>
+            </tr>
+          {% empty %}
+            <td>No players data</td>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% include 'pagination.html' %}
+    </div>
+  </div>
+{% endblock content %}

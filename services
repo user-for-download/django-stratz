@@ -1,0 +1,37 @@
+/etc/systemd/system/celery.service
+
+# /etc/systemd/system/celery.service
+[Unit]
+Description=Celery Service
+After=network.target
+
+[Service]
+Type=forking
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/git/python/dj
+ExecStart=/home/ubuntu/git/python/env/bin/celery -A config.celery_app multi start worker --loglevel=info --logfile=/home/ubuntu/git/python/dj/log/logfile.log
+ExecStop=/home/ubuntu/git/python/env/bin/celery multi stopwait
+ExecReload=/home/ubuntu/git/python/env/bin/celery -A config.celery_app multi restart worker --loglevel=info --logfile=/home/ubuntu/git/python/dj/log/logfile.log
+
+[Install]
+WantedBy=multi-user.target
+
+
+# /etc/systemd/system/celerybeat.service
+[Unit]
+Description=Celery Beat Service
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/git/python/dj
+ExecStart=/home/ubuntu/git/python/env/bin/celery -A config.celery_app beat --logfile=/home/ubuntu/git/python/dj/log/logfile.log
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

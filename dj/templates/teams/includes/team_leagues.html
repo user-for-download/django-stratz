@@ -1,0 +1,28 @@
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th class="text-center" scope="col">Id</th>
+    <th scope="col">Name</th>
+    <th class="text-center" scope="col">Tier</th>
+    <th class="text-center" scope="col">Status</th>
+    <th class="text-center" scope="col">Prize</th>
+    <th class="text-center" scope="col">Updated</th>
+    <th class="text-center" scope="col">Start</th>
+    <th class="text-center" scope="col">End</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for league in leagues %}
+    <tr {% if league.end_datetime %} class="table-primary" {% endif %}>
+      <th scope="row"><a href="{{ league.get_absolute_url }}">{{ league.id }}</a></th>
+      <td>{{ league.display_name }}</td>
+      <td {% if league.tier > 1 %} class="table-warning"{% endif %}>{{ league.tier }}</td>
+      <td>{{ league.status }}</td>
+      <td>{{ league.prize_pool }}</td>
+      <td>{{ league.updated_at|date:'d.m.Y' }}</td>
+      <td>{{ league.get_verbose_start_datetime|date:'d.m.Y' }}</td>
+      <td>{{ league.get_verbose_end_datetime|date:'d.m.Y' }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

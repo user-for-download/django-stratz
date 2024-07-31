@@ -1,0 +1,5 @@
+{% for rank in player.get_ranks %}
+  <li><a class="dropdown-item">season: {{ rank.season_rank_id }} - rank: {{ rank.rank }}</a></li>
+{% empty %}
+  <li><a class="dropdown-item">No previous ranks available.</a></li>
+{% endfor %}

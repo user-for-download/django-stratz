@@ -1,0 +1,6 @@
+{% for name in player.get_names %}
+  <li class="text-truncate" style="max-width: 400px;">
+    <a class="dropdown-item">{{ name }}</a></li>
+{% empty %}
+  <li><a class="dropdown-item">No previous names available.</a></li>
+{% endfor %}

@@ -1,0 +1,48 @@
+<div class="table-responsive p-0 m-0">
+  <table class="table custom-table">
+    <thead>
+    <tr>
+      <th scope="col">Match ID</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Dire Team</th>
+      <th scope="col">Dire Picks</th>
+      <th scope="col">D k</th>
+      <th scope="col"></th>
+      <th scope="col">R k</th>
+      <th scope="col">Radiant Picks</th>
+      <th scope="col">Radiant Team</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for match in matches %}
+      <tr>
+        <td class="align-middle text-center p-0"><a
+          href="{{ match.get_absolute_url }}">{{ match.id }}</a>
+        </td>
+        <td class="align-middle text-center p-0">{{ match.get_verbose_duration_seconds }}</td>
+        <td class="align-middle text-center p-0 {% if not match.did_radiant_win %}table-success{% endif %}">
+          <a
+            href="{{ match.dire_team.get_absolute_url }}">{{ match.dire_team.name|default:match.dire_team_id }}</a>
+        </td>
+        <td class="align-middle text-center p-0">
+          {% include 'common/match/team_picks_ul.html' with picks=match.pick_bans.dire_picks %}
+        </td>
+        <td class="align-middle p-0">{{ match.get_count_dire_kills }}</td>
+        <td class="align-middle text-center p-0">:</td>
+        <td class="align-middle p-0">{{ match.get_count_radiant_kills }}</td>
+        <td class="align-middle text-center p-0">
+          {% include 'common/match/team_picks_ul.html' with picks=match.pick_bans.radiant_picks %}
+        </td>
+        <td class="align-middle text-center {% if match.did_radiant_win %}table-success{% endif %}">
+          <a
+            href="{{ match.radiant_team.get_absolute_url }}">
+            {{ match.radiant_team.name|default:match.radiant_team_id }}
+          </a>
+        </td>
+      </tr>
+    {% empty %}
+      <td class="align-middle text-center">No Matches</td>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

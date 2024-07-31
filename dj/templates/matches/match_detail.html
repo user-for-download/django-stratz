@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+  Match: {{ match.match_id }} - {{ match.league.display_name }}
+{% endblock title %}
+{% block content %}
+  <div>
+  <div class="container">
+    <div class="row p-2">
+      <div class="col text-center">
+        {{ match.id }} {{ match.get_last_update }}
+        <h1>Match Details</h1>
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <td>{{ match.id }}</td>
+          </tr>
+          <tr>
+            <th>Did Radiant Win</th>
+            <td>{{ match.did_radiant_win }}</td>
+          </tr>
+          <tr>
+            <th>Duration (Seconds)</th>
+            <td>{{ match.duration_seconds }}</td>
+          </tr>
+          <tr>
+            <th>Start DateTime</th>
+            <td>{{ match.get_verbose_start_datetime }}</td>
+          </tr>
+          <tr>
+            <th>Tower Status Radiant</th>
+            <td>{{ match.tower_status_radiant }}</td>
+          </tr>
+          <tr>
+            <th>Tower Status Dire</th>
+            <td>{{ match.tower_status_dire }}</td>
+          </tr>
+          <tr>
+            <th>Barracks Status Radiant</th>
+            <td>{{ match.barracks_status_radiant }}</td>
+          </tr>
+          <tr>
+            <th>Barracks Status Dire</th>
+            <td>{{ match.barracks_status_dire }}</td>
+          </tr>
+          <tr>
+            <th>Cluster ID</th>
+            <td>{{ match.cluster_id }}</td>
+          </tr>
+          <tr>
+            <th>First Blood Time</th>
+            <td>{{ match.first_blood_time }}</td>
+          </tr>
+          <tr>
+            <th>Lobby Type</th>
+            <td>{{ match.lobby_type }}</td>
+          </tr>
+          <tr>
+            <th>Number of Human Players</th>
+            <td>{{ match.num_human_players }}</td>
+          </tr>
+          <tr>
+            <th>Game Mode</th>
+            <td>{{ match.game_mode }}</td>
+          </tr>
+          <tr>
+            <th>Replay Salt</th>
+            <td>{{ match.replay_salt }}</td>
+          </tr>
+          <tr>
+            <th>Is Stats</th>
+            <td>{{ match.is_stats }}</td>
+          </tr>
+          <tr>
+            <th>Tournament ID</th>
+            <td>{{ match.tournament_id }}</td>
+          </tr>
+          <tr>
+            <th>Tournament Round</th>
+            <td>{{ match.tournament_round }}</td>
+          </tr>
+          <tr>
+            <th>Average Rank</th>
+            <td>{{ match.average_rank }}</td>
+          </tr>
+          <tr>
+            <th>Actual Rank</th>
+            <td>{{ match.actual_rank }}</td>
+          </tr>
+          <tr>
+            <th>Average IMP</th>
+            <td>{{ match.average_imp }}</td>
+          </tr>
+          <tr>
+            <th>Parsed DateTime</th>
+            <td>{{ match.parsed_date_time }}</td>
+          </tr>
+          <tr>
+            <th>Stats DateTime</th>
+            <td>{{ match.stats_date_time }}</td>
+          </tr>
+          <tr>
+            <th>League</th>
+            <td>{{ match.league }}</td>
+          </tr>
+          <tr>
+            <th>Radiant Team</th>
+            <td>{{ match.radiant_team }}</td>
+          </tr>
+          <tr>
+            <th>Dire Team</th>
+            <td>{{ match.dire_team }}</td>
+          </tr>
+          <tr>
+            <th>Series</th>
+            <td>{{ match.series }}</td>
+          </tr>
+          <tr>
+            <th>Game Version ID</th>
+            <td>{{ match.game_version_id }}</td>
+          </tr>
+          <tr>
+            <th>Region ID</th>
+            <td>{{ match.region_id }}</td>
+          </tr>
+          <tr>
+            <th>Sequence Number</th>
+            <td>{{ match.sequence_num }}</td>
+          </tr>
+          <tr>
+            <th>Rank</th>
+            <td>{{ match.rank }}</td>
+          </tr>
+          <tr>
+            <th>Bracket</th>
+            <td>{{ match.bracket }}</td>
+          </tr>
+          <tr>
+            <th>End DateTime</th>
+            <td>{{ match.end_date_time }}</td>
+          </tr>
+          <tr>
+            <th>Actual Rank Weight</th>
+            <td>{{ match.actual_rank_weight }}</td>
+          </tr>
+          <tr>
+            <th>Playback Data</th>
+            <td>{{ match.playback_data }}</td>
+          </tr>
+          <tr>
+            <th>Pick Bans</th>
+            <td>{{ match.pick_bans.all|join:", " }}</td>
+          </tr>
+          <tr>
+            <th>Spectators</th>
+            <td>{{ match.spectators.all|join:", " }}</td>
+          </tr>
+          <tr>
+            <th>Players</th>
+            <td>{{ match.players.all|join:", " }}</td>
+          </tr>
+          <tr>
+            <th>Analysis Outcome</th>
+            <td>{{ match.analysis_outcome }}</td>
+          </tr>
+          <tr>
+            <th>Predicted Outcome Weight</th>
+            <td>{{ match.predicted_outcome_weight }}</td>
+          </tr>
+          <tr>
+            <th>Bottom Lane Outcome</th>
+            <td>{{ match.bottom_lane_outcome }}</td>
+          </tr>
+          <tr>
+            <th>Mid Lane Outcome</th>
+            <td>{{ match.mid_lane_outcome }}</td>
+          </tr>
+          <tr>
+            <th>Top Lane Outcome</th>
+            <td>{{ match.top_lane_outcome }}</td>
+          </tr>
+          <tr>
+            <th>Radiant Networth Lead</th>
+            <td>{{ match.radiant_networth_lead }}</td>
+          </tr>
+          <tr>
+            <th>Radiant Experience Lead</th>
+            <td>{{ match.radiant_experience_lead }}</td>
+          </tr>
+          <tr>
+            <th>Radiant Kills</th>
+            <td>{{ match.get_count_radiant_kills }}</td>
+          </tr>
+          <tr>
+            <th>Dire Kills</th>
+            <td>{{ match.get_count_dire_kills }}</td>
+          </tr>
+          <tr>
+            <th>Tower Status</th>
+            <td>{{ match.tower_status }}</td>
+          </tr>
+          <tr>
+            <th>Lane Report</th>
+            <td>{{ match.lane_report }}</td>
+          </tr>
+          <tr>
+            <th>Win Rates</th>
+            <td>{{ match.win_rates }}</td>
+          </tr>
+          <tr>
+            <th>Predicted Win Rates</th>
+            <td>{{ match.predicted_win_rates }}</td>
+          </tr>
+          <tr>
+            <th>Tower Deaths</th>
+            <td>{{ match.tower_deaths }}</td>
+          </tr>
+          <tr>
+            <th>Chat Events</th>
+            <td>{{ match.chat_events }}</td>
+          </tr>
+          <tr>
+            <th>Did Request Download</th>
+            <td>{{ match.did_request_download }}</td>
+          </tr>
+          <tr>
+            <th>Radiant Players</th>
+            <td>{{ match.radiant_players.all|join:", " }}</td>
+          </tr>
+          <tr>
+            <th>Dire Players</th>
+            <td>{{ match.dire_players.all|join:", " }}</td>
+          </tr>
+          <tr>
+            <th>Game Result</th>
+            <td>{{ match.game_result }}</td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </div>
+{% endblock content %}

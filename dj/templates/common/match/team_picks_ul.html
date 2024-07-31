@@ -1,0 +1,16 @@
+<ul class="persons">
+  {% for pick in picks %}
+    <li>
+      <a href="#">
+        <img class="hero-image hero-image-dark"
+             src="{{ pick.hero_image_url }}" alt="{{ pick.hero_id }}">
+      </a>
+    </li>
+  {% empty %}
+    <li>
+      <a href="#">
+        <img src="https://api.dicebear.com/8.x/initials/svg?seed=ER" alt="No Picks" class="img-fluid">
+      </a>
+    </li>
+  {% endfor %}
+</ul>

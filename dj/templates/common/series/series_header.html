@@ -1,0 +1,36 @@
+<div class="row justify-content-around">
+  {% if request.user.is_authenticated %}
+    <div class="col-auto m-0 p-0 align-self-center">
+      <div id="fetch-details-{{ series.id }}">
+        <button type="submit" class="btn" id="fetch-button-{{ series.id }}" onclick="fetchLeagueData({{ series.id }})">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+               class="bi bi-bootstrap-reboot border-0" viewBox="0 0 16 16">
+            <path
+              d="M1.161 8a6.84 6.84 0 1 0 6.842-6.84.58.58 0 1 1 0-1.16 8 8 0 1 1-6.556 3.412l-.663-.577a.58.58 0 0 1 .227-.997l2.52-.69a.58.58 0 0 1 .728.633l-.332 2.592a.58.58 0 0 1-.956.364l-.643-.56A6.8 6.8 0 0 0 1.16 8z"></path>
+            <path
+              d="M6.641 11.671V8.843h1.57l1.498 2.828h1.314L9.377 8.665c.897-.3 1.427-1.106 1.427-2.1 0-1.37-.943-2.246-2.456-2.246H5.5v7.352zm0-3.75V5.277h1.57c.881 0 1.416.499 1.416 1.32 0 .84-.504 1.324-1.386 1.324z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  {% endif %}
+  <div class="col-auto align-self-center">
+    {{ series.get_verbose_last_match_date_time }}
+  </div>
+  <div class="col-4 align-self-center text-end">
+    <h5 class="m-0 p-0">{{ series.get_title_team_two|safe }}</h5>
+  </div>
+  <div class="col-1 align-self-center">
+    {{ series.team_two_win_count }} vs {{ series.team_one_win_count }}
+  </div>
+  <div class="col-4 align-self-center text-start">
+    <h5 class="m-0 p-0">{{ series.get_title_team_one|safe }}</h5>
+  </div>
+  <div class="col-auto m-0 p-0 align-self-center">
+    <a class="btn" data-bs-toggle="collapse" href="#collapse{{ series.id }}">+</a>
+  </div>
+</div>
+<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+   Bo{{ series.get_bo_format_name|safe }}
+    <span class="visually-hidden">format series</span>
+</span>

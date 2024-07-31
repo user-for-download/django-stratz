@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  League: {{ league.league_id }} - {{ league.display_name }}
+{% endblock title %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-12">
+        <article>
+          <header class="mb-4">
+            <h1 class="fw-bolder mb-1">{{ league.display_name }}</h1>
+            <div class="text-muted fst-italic mb-2">Start on {{ league.get_verbose_start_datetime }}</div>
+            <a class="badge bg-secondary text-decoration-none link-light" href="#">Dota 2</a>
+            <a class="badge bg-secondary text-decoration-none link-light" href="#">Tier {{ league.tier }}</a>
+          </header>
+        </article>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card card-primary card-outline">
+          <div class="card-body box-profile">
+            <div class="text-center">
+              <img class="profile-user-img img-fluid img-circle"
+                   src="https://icons.iconarchive.com/icons/uiconstock/e-commerce/256/e-commerce-icon-icon.png"
+                   alt="User profile picture">
+            </div>
+            <h3 class="profile-username text-center">{{ league.display_name }}</h3>
+            <p class="text-muted text-center">{{ league.description }}</p>
+            {% if request.user.is_authenticated %}
+              <div class="d-flex justify-content-center input-group">
+                <form method="post" action="{% url 'leagues:update_league_data' league.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary m-2">Update Data</button>
+                </form>
+              </div>
+            {% endif %}
+            <ul class="list-group list-group-unbordered mb-3">
+              <li class="list-group-item">
+                <b>Base Prize</b> <span class="float-end">{{ league.base_prize_pool }}</span>
+              </li>
+              <li class="list-group-item">
+                <b>Prize</b> <span class="float-end">{{ league.prize_pool }}</span>
+              </li>
+              <li class="list-group-item">
+                <b>Region</b> <span class="float-end">{{ league.region }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">About</h3>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Venue: {{ league.venue }}</li>
+              <li class="list-group-item">Private: {{ league.private }}</li>
+              <li class="list-group-item">City: {{ league.city }}</li>
+              <li class="list-group-item">Has Live Matches: {{ league.has_live_matches }}</li>
+              <li class="list-group-item">Last Match Date: {{ league.last_match_date }}</li>
+              <li class="list-group-item">Pro Circuit Points: {{ league.pro_circuit_points }}</li>
+              <li class="list-group-item">Banner: {{ league.banner }}</li>
+              <li class="list-group-item">Stop Sales Time: {{ league.stop_sales_time }}</li>
+              <li class="list-group-item">Image URI: {{ league.image_uri }}</li>
+              <li class="list-group-item">End Datetime: {{ league.end_datetime }}</li>
+              <li class="list-group-item">Start Datetime: {{ league.start_datetime }}</li>
+              <li class="list-group-item">Status: {{ league.status }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="p-1" id="pr-heroes-bar"></div>
+        <div class="card mb-1">
+          <div class="card-body">
+            {% include 'common/match/heroes_bar_chart.html' %}
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <ul class="nav nav-pills" id="list-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab"
+                   aria-controls="list-home">Teams</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab"
+                   aria-controls="list-profile">Series</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab"
+                   aria-controls="list-messages">Picks</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="list-graph-list" data-bs-toggle="list" href="#list-graph" role="tab"
+                   aria-controls="graph-messages">Graph</a>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body">
+            <div class="tab-content">
+              <div class="tab-pane fade" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                <div>
+                  <h2>Teams</h2>
+                  <ul>
+                    {% for team in teams %}
+                      <li>{{ team.name | default:team.id }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+              <div class="tab-pane fade show active" id="list-profile" role="tabpanel"
+                   aria-labelledby="list-profile-list">
+                {% include 'pagination.html' %}
+                {% for series_obj in page_obj %}
+                  <div class="col text-center">
+                    <div id="s{{ series_obj.id }}" class="pt-1">
+                      <div class="card">
+                        <div class="card-header">
+                          {% include 'common/series/series_header.html' with series=series_obj %}
+                        </div>
+                        <div id="collapse{{ series_obj.id }}" class="collapse" data-bs-parent="s{{ series_obj.id }}">
+                          <div class="card-body p-0 m-0">
+                            {% include 'common/match/match_table.html' with matches=series_obj.get_matches %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+                {% include 'common/match/pie_chart_heroes.html' %}
+              </div>
+              <div class="tab-pane fade" id="list-graph" role="tabpanel" aria-labelledby="list-graph-list">
+                {% include 'common/match/graph_picks.html' %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block inline_javascript %}
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetchDataAndCreateCharts("type_obj=league&id_obj={{ league.id }}", 'pr-heroes-bar').then(data => {
+        if (data) {
+          createBarChart("#heroes-bar-chart", data.nodes_picks);
+          createBarChart("#heroes-bar-chart-bans", data.nodes_bans);
+          createPieChart('#pieChartPicks', data.nodes_picks);
+          createPieChart('#pieChartBans', data.nodes_bans);
+          createHeroGraph('#graph', data.nodes_picks, data.links_picks);
+        } else {
+          console.error('Error fetching heroes data:', data.error);
+        }
+      });
+    })
+  </script>
+{% endblock inline_javascript %}
+
+

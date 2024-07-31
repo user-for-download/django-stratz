@@ -1,0 +1,111 @@
+{% block javascript %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <script src="https://unpkg.com/chart.js-plugin-labels-dv@3.0.5/dist/chartjs-plugin-labels.min.js"></script>
+{% endblock javascript %}
+<div class="card">
+  <div class="card-header">
+    Team Picks
+  </div>
+  <div class="card-body">
+    <div class="chartBox-wrapper">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+    <script>
+      // Define a custom plugin to handle image rendering with border radius and dynamic size
+      const roundedImagePlugin = {
+        id: 'roundedImagePlugin',
+        afterDatasetsDraw(chart) {
+          const {ctx, data} = chart;
+          const dataset = data.datasets[0];
+          const total = dataset.data.reduce((acc, val) => acc + val, 0);
+
+          dataset.data.forEach((value, index) => {
+            const meta = chart.getDatasetMeta(0);
+            const element = meta.data[index];
+            const {x, y} = element.tooltipPosition();
+            const image = new Image();
+            image.src = dataset.images[index];
+            const percentage = (value / total);
+            const size = 26 + (percentage * 400); // Base size is 35, max size can be 105
+            const radius = size / 2.1;  // Adjust the border radius as needed
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.clip();
+            ctx.drawImage(image, x - size / 2, y - size / 2, size, size);
+            ctx.restore();
+          });
+        }
+      };
+      // Pass graph_data.nodes to JavaScript labels
+      const heroes = {{ graph_data.nodes|safe }};
+      heroes.sort((a, b) => b.count - a.count);
+
+      let data = {
+        labels: heroes.map(pick => pick.size > 40 ? pick.name : ''),
+        datasets: [{
+          label: 'Hero Picks',
+          data: heroes.map(pick => pick.size > 40 ? pick.size : 0),
+          size: heroes.map(pick => pick.size),
+          backgroundColor: [
+            'rgba(255, 26, 104, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(0, 0, 0, 0.2)',
+            'rgba(20, 43, 152, 0.2)'
+          ],
+          images: heroes.map(pick => pick.size > 40 ? pick.image : '')
+        }]
+      };
+
+      const config = {
+        type: 'doughnut',
+        data: data,
+        options: {
+          plugins: {
+            datalabels: {
+              color: '#000',
+              font: {
+                weight: 'bold'
+              },
+              formatter: (value, context) => {
+                let sum = 0;
+                context.dataset.size.forEach(data => {
+                  sum += data;
+                });
+                const percentage = ((value / sum) * 100).toFixed(1);
+                if (percentage < 1) {
+                  return '';
+                } else {
+                  return `${percentage}%`;
+                }
+              },
+              anchor: 'start',
+              {#align: 'start',#}
+              {#offset: 20#}
+            },
+            legend: {
+              display: false
+            }
+          }
+        },
+        plugins: [ChartDataLabels, roundedImagePlugin]
+      };
+
+      // Render the chart
+      const myChart = new Chart(
+        document.getElementById('myChart').getContext('2d'),
+        config
+      );
+    </script>
+  </div>
+</div>
+
+
